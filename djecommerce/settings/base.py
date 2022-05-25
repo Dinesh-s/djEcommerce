@@ -7,6 +7,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(
 SECRET_KEY = config('SECRET_KEY')
 
 INSTALLED_APPS = [
+    'psqldb',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,3 +81,6 @@ LOGIN_REDIRECT_URL = '/'
 # CRISPY FORMS
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+ACCOUNT_FORMS = {
+    'signup': 'core.forms.ReigstrationForm',
+}

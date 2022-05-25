@@ -5,7 +5,28 @@
     <div class="container">
 
     <div class="table-responsive text-nowrap">
-    <h2>Order Summary</h2>
+    <h2>Order Summary </h2>
+    <div class="col-12 row">
+        <div class="col-4">Order #</div>
+        <div class="col-4">{{order.order_uuid}}</div>
+    </div>
+    <div class="col-12 row">
+        <div class="col-4">Order Date</div>
+        <div class="col-4">{{order.order_date}}</div>
+    </div>
+    <div class="col-12 row">
+        <div class="col-4">Order Delivered</div>
+        <div class="col-4">{{order.delivered}}</div>
+    </div>
+    <div class="col-12 row">
+        <div class="col-4">Order Shipped</div>
+        <div class="col-4">{{order.shipped}}</div>
+    </div>
+    <div class="col-12 row">
+        <div class="col-4">Order Transaction ID</div>
+        <div class="col-4">{{order.payment_id.transaction_id}}</div>
+    </div>
+    <div class="col-12 row"> &nbsp; </div>
     <table class="table">
         <thead>
         <tr>
@@ -28,15 +49,11 @@
             </td>
             <td> &#8377; {{ item.price }}</td>
             <td>
-                <a href="{% url 'core:remove-single-item-from-cart' item.product_uuid %}"><i class="fas fa-minus mr-2"></i></a>
                 {{ item.qty }}
-                <a href="{% url 'core:add-single-item-to-cart' item.product_uuid %}"><i class="fas fa-plus ml-2"></i></a>
             </td>
             <td>
                 &#8377; {{item.total }}
-            <a style='color: red;' href="{% url 'core:remove-from-cart' item.product_uuid %}">
-                <i class="fas fa-trash float-right"></i>
-            </a>
+            
             </td>
         </tr>
         {% empty %}
@@ -52,13 +69,7 @@
         {% if items|length %}
         <tr>
             <td colspan="4"><b>Order Total</b></td>
-            <td><b>	&#8377;{{ total }}</b></td>
-        </tr>
-        <tr>
-            <td colspan="5">
-            <a class='btn btn-warning float-right ml-2' href='/checkout/'>Proceed to checkout</a>
-            <a class='btn btn-primary float-right' href='/'>Continue shopping</a>
-            </td>
+            <td><b>	&#8377;{{ order.total }}</b></td>
         </tr>
         {% endif %}
         </tbody>

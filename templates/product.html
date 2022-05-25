@@ -1,17 +1,17 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 
   <main class="mt-5 pt-4">
     <div class="container dark-grey-text mt-5">
-
       <!--Grid row-->
       <div class="row wow fadeIn">
 
         <!--Grid column-->
         <div class="col-md-6 mb-4">
 
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/14.jpg" class="img-fluid" alt="">
+          <img src="{% static item.image %}" class="img-fluid" alt="">
 
         </div>
         <!--Grid column-->
@@ -29,36 +29,42 @@
             </div>
 
             <p class="lead">
-              {% if object.discount_price %}
               <span class="mr-1">
-                <del>${{ object.price }}</del>
+                <span>&#8377; {{ item.price }}</span>
               </span>
-              <span>${{ object.discount_price }}</span>
-              {% else %}
-              <span>${{ object.price }}</span>
-              {% endif %}
             </p>
 
             <p class="lead font-weight-bold">Description</p>
 
-            <p>{{ object.description }}</p>
+            <p>{{ item.description }}</p>
+              <form class="d-flex justify-content-left row" action="{% url 'core:add-to-cart' slug=item.product_uuid %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" id="form1" class="form-control" name="customizable" value="{{item.customizable}}">
+                {% if item.customizable == 2 %}
+                <div class="md-form col-12">
+                  <input type="text" id="form1" class="form-control" name="customText">
+                  <label for="form1">Custom Text</label>
+                </div>
+                <div class="clearfix"></div>
+                <div class="md-form col-12">
+                  <input type="file" id="form1" name="customImage" class="form-control" placeholder="Custom Image"> 
+                </div>
+                {% endif %}
+                <div class="md-form col-12">
 
-            {% comment %} <form class="d-flex justify-content-left">
-              <!-- Default input -->
-              <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
-              <button class="btn btn-primary btn-md my-0 p" type="submit">
-                Add to cart
-                <i class="fas fa-shopping-cart ml-1"></i>
-              </button>
+                <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
+                <button class="btn btn-primary btn-md my-0 p" type="submit">
+                  Add to cart
+                  <i class="fas fa-shopping-cart ml-1"></i>
+                </button>
+                </div>
 
-            </form> {% endcomment %}
-            <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">
+              </form>
+            <!-- <a href="{% url 'core:add-to-cart' slug=item.product_uuid %}" class="btn btn-primary btn-md my-0 p">
               Add to cart
               <i class="fas fa-shopping-cart ml-1"></i>
-            </a>
-            <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">
-              Remove from cart
-            </a>
+            </a> -->
+            
 
           </div>
           <!--Content-->

@@ -32,27 +32,46 @@
 
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
-          {% if request.user.is_authenticated %}
+          {% if request.session.user_login == True %}
+          {% if request.session.user.user_type == 1 %}
+            <li class="nav-item">
+              <a href="{% url 'core:order-summary' %}" class="nav-link waves-effect">
+                <span class="badge red z-depth-1 mr-1"> {{ request.session.cart |length  }} </span>
+                <i class="fas fa-shopping-cart"></i>
+                <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'core:user_account' %}" class="nav-link waves-effect">
+                <span class="clearfix d-none d-sm-inline-block"> My Orders </span>
+              </a>
+            </li>
+          {% elif request.session.user.user_type == 2 %}
+            <li class="nav-item">
+              <a href="{% url 'core:vendor_account' %}" class="nav-link waves-effect">
+                <span class="clearfix d-none d-sm-inline-block"> Account </span>
+              </a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a href="{% url 'core:order-summary' %}" class="nav-link waves-effect">
+                <span class="clearfix d-none d-sm-inline-block"> Admin </span>
+              </a>
+            </li>
+          {% endif %}
           <li class="nav-item">
-            <a href="{% url 'core:order-summary' %}" class="nav-link waves-effect">
-              <span class="badge red z-depth-1 mr-1"> {{ request.user|cart_item_count }} </span>
-              <i class="fas fa-shopping-cart"></i>
-              <span class="clearfix d-none d-sm-inline-block"> Cart </span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'account_logout' %}">
+            <a class="nav-link waves-effect" href="{% url 'core:logout' %}">
               <span class="clearfix d-none d-sm-inline-block"> Logout </span>
             </a>
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'account_login' %}">
+            <a class="nav-link waves-effect" href="{% url 'core:login_form' %}">
               <span class="clearfix d-none d-sm-inline-block"> Login </span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'account_signup' %}">
+            <a class="nav-link waves-effect" href="{% url 'core:sign_up_form' %}">
               <span class="clearfix d-none d-sm-inline-block"> Signup </span>
             </a>
           </li>

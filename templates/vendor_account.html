@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/datatables.min.css' %}"/>
+{% endblock %}
+
+{% block extra_scripts %}
+<script type="text/javascript" src="{% static 'js/datatables.min.js' %}"></script>
+<script>
+    $( document ).ready(function() {
+        $('#trigger').click(function () {
+          $('#productPopup').modal({show : true});
+        });
+        $('#product-table').DataTable ()
+        $('#my-table').DataTable ()
+    });
+  </script>
+{% endblock %}
+{% block content %}
+  <main>
+    <div class="container">
+
+    <div class="table-responsive text-nowrap">
+    <h2>My Products</h2>
+    {% if message != "" %}
+        <div class="alert alert-primary" role="alert" data-mdb-color="primary">
+            {{ message }}
+        </div>
+    {% endif %}
+    <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#productPopup" id="trigger">
+        Add Product
+    </button>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="productPopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Product</h5>
+            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form class="popup" method="POST" action="." enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ productForm }}
+                <button class="btn btn-primary" type="submit">Save</button>
+              </form>
+        </div>
+        <div class="modal-footer">
+            <!-- <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button> -->
+            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        </div>
+        </div>
+    </div>
+    </div>
+    <table id="product-table" class="table table-striped table-bordered" cellspacing="1" width="90%">
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for data in items %}
+            <tr>
+                <td>{{ data.product_uuid }}</td>
+                <td>
+                    <img src="{% static data.image %}" width="100%">
+                </td>
+                <td>{{ data.name }}</td>
+                <td>{{ data.description }}</td>
+                <td>{{ data.price }}</td>
+                <td> <button type="button" class="btn btn-indigo btn-sm m-0">Edit</button> &nbsp; <button type="button" class="btn btn-danger btn-sm m-0">Delete</button> </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Shop Summary</h2>
+        <table id="my-table" class="table table-striped table-bordered" cellspacing="1" width="90%">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    </div>
+  </main>
+
+{% endblock content %}
+
+
